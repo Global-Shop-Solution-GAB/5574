@@ -1,0 +1,56 @@
+Program.Sub.ScreenSU.Start
+Gui.frmLong..Create
+Gui.frmLong..Caption("Long Part Generator")
+Gui.frmLong..Size(6825,2550)
+Gui.frmLong..MinX(0)
+Gui.frmLong..MinY(0)
+Gui.frmLong..Position(0,0)
+Gui.frmLong..BackColor(-2147483633)
+Gui.frmLong..MousePointer(0)
+Gui.frmLong..Event(UnLoad,frmLong_UnLoad)
+Gui.frmLong.txtLongPart.Create(TextBox,"",True,3390,300,0,165,360,True,0,"Arial",8,-2147483643,1)
+Gui.frmLong.txtLongRev.Create(TextBox,"",True,1215,300,0,3825,360,True,0,"Arial",8,-2147483643,1)
+Gui.frmLong.lblLongPart.Create(Label,"Long Part Number",True,3375,255,0,165,105,True,0,"Arial",8,-2147483633,0)
+Gui.frmLong.lblGSSPart.Create(Label,"GSS Part Number",True,1935,255,0,180,1275,True,0,"Arial",8,-2147483633,0)
+Gui.frmLong.cmdGenerate.Create(Button)
+Gui.frmLong.cmdGenerate.Size(1530,375)
+Gui.frmLong.cmdGenerate.Position(150,735)
+Gui.frmLong.cmdGenerate.Caption("Generate")
+Gui.frmLong.cmdGenerate.Event(Click,cmdGenerate_Click)
+Gui.frmLong.txtGSSPart.Create(TextBox,"",True,3390,300,0,180,1515,True,0,"Arial",8,-2147483643,1)
+Gui.frmLong.lblLongRev.Create(Label,"Long Rev",True,2700,255,0,3825,105,True,0,"Arial",8,-2147483633,0)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+v.Local.lret.Declare
+v.Local.sCaption.Declare
+'Long Part
+f.Global.General.ReadOption("400861",3,20,v.Local.lret)
+gui.frmLong.txtLongPart.MaxLength(v.Local.lRet)
+f.Intrinsic.String.Concat("Long Part Number (",v.Local.lret," characters).",v.Local.sCaption)
+gui.frmLong.lblLongPart.Caption(v.Local.sCaption)
+'Long Rev
+f.Global.General.ReadOption("400862",3,3,v.Local.lret)
+gui.frmLong.txtLongRev.MaxLength(v.Local.lret)
+f.Intrinsic.String.Concat("Long Rev Number (",v.Local.lret," characters).",v.Local.sCaption)
+gui.frmLong.lblLongRev.Caption(v.Local.sCaption)
+'Show Form
+gui.frmLong..Show
+Program.Sub.Main.End
+
+Program.Sub.cmdGenerate_Click.Start
+v.Local.sLongPart.Declare
+v.Local.sLongRev.Declare
+v.Local.sGSSPart.Declare
+v.Local.sLongPart.Set(v.Screen.frmLong!txtLongPart.text)
+v.Local.sLongRev.Set(v.Screen.frmLong!txtLongRev.text)
+f.Global.Inventory.GetGSSPart(v.Local.sLongPart,v.Local.sLongRev,v.Local.sGSSPart)
+gui.frmLong.txtGSSPart.Text(v.Local.sGSSPart)
+Program.Sub.cmdGenerate_Click.End
+
+Program.Sub.frmLong_UnLoad.Start
+F.Intrinsic.Control.End
+Program.Sub.frmLong_UnLoad.End
